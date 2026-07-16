@@ -1,0 +1,222 @@
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+html,
+body {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  padding: 24px;
+  background: linear-gradient(135deg, #0f2b4d 0%, #293f6a 45%, #79a7d3 100%);
+  transition: background 0.8s ease;
+}
+
+body:hover {
+  background: linear-gradient(135deg, #152f57 0%, #33557e 45%, #8cb4e1 100%);
+}
+
+.box {
+  width: min(100%, 760px);
+  background: rgba(255, 255, 255, 0.98);
+  border: 1px solid rgba(255, 255, 255, 0.75);
+  border-radius: 32px;
+  box-shadow: 0 36px 90px rgba(12, 32, 60, 0.18);
+  overflow: hidden;
+  padding: 20px 24px 26px;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, background 0.35s ease, border-color 0.35s ease;
+}
+
+.box:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 32px 72px rgba(12, 32, 60, 0.24);
+}
+
+#heading {
+  background: linear-gradient(135deg, #1d4b8f 0%, #2b6bbd 100%);
+  color: #ffffff;
+  text-align: center;
+  padding: 26px 20px;
+}
+
+.item {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 16px 18px;
+  align-items: start;
+  padding: 22px 20px;
+  border-bottom: 1px solid rgba(39, 82, 130, 0.14);
+  transition: background 0.3s ease, transform 0.3s ease;
+}
+
+.item:hover {
+  background: rgba(29, 72, 116, 0.05);
+}
+
+.item input[type='checkbox'] {
+  grid-row: 1 / span 2;
+  width: 26px;
+  height: 26px;
+  margin: 6px 0 0;
+  border: 2px solid #1d4b8f;
+  border-radius: 6px;
+  appearance: none;
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.3s ease, border-color 0.3s ease;
+}
+
+.item input[type='checkbox']:hover,
+.item input[type='checkbox']:focus {
+  transform: scale(1.1);
+  border-color: #183d74;
+  background: rgba(29, 72, 116, 0.14);
+  outline: none;
+}
+
+.item input[type='checkbox']:checked {
+  background: #1d4b8f;
+  border-color: #1d4b8f;
+  clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+}
+
+.item .duedate {
+  grid-column: 2;
+  grid-row: 1;
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #3b4f6d;
+}
+
+.item > .task_name {
+  grid-column: 2;
+  grid-row: 2;
+  margin: 0;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.6;
+  color: #16243a;
+}
+
+.overdue {
+  color: #c0392b;
+}
+
+.notdue {
+  color: #1d6d32;
+}
+
+p {
+  margin: 0;
+  color: #16243a;
+}
+
+form {
+  text-align: center;
+  padding: 20px;
+}
+
+form.item {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 12px;
+  align-items: center;
+  border-bottom: none;
+}
+
+input[type='text'],
+input[type='date'] {
+  width: 100%;
+  min-height: 50px;
+  border: none;
+  border-radius: 14px;
+  background: #f4f7fb;
+  padding: 0 16px;
+  font-size: 1rem;
+  transition: background 0.25s ease, transform 0.25s ease, box-shadow 0.25s ease;
+}
+
+input[type='text']:focus,
+input[type='date']:focus {
+  outline: none;
+  background: #ffffff;
+  box-shadow: 0 0 0 4px rgba(29, 72, 116, 0.08);
+}
+
+button {
+  width: 56px;
+  height: 56px;
+  border-radius: 50%;
+  border: none;
+  font-size: 1.8rem;
+  color: #ffffff;
+  background: linear-gradient(135deg, #1d4b8f 0%, #4d81d8 100%);
+  box-shadow: 0 12px 20px rgba(29, 72, 116, 0.18);
+  cursor: pointer;
+  transition: transform 0.25s ease, box-shadow 0.25s ease, background 0.25s ease;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 24px rgba(29, 72, 116, 0.24);
+  background: linear-gradient(135deg, #1b3f7c 0%, #3f6cc2 100%);
+}
+
+.logout {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  background: rgba(29, 72, 116, 0.96);
+  color: #ffffff;
+  padding: 12px 18px;
+  border-radius: 999px;
+  text-decoration: none;
+  font-weight: 600;
+  box-shadow: 0 14px 28px rgba(9, 28, 55, 0.16);
+  transition: transform 0.25s ease, background 0.25s ease;
+}
+
+.logout:hover {
+  transform: translateY(-2px);
+  background: rgba(29, 72, 116, 1);
+}
+
+@media (max-width: 720px) {
+  body {
+    padding: 16px;
+  }
+
+  .item {
+    grid-template-columns: auto;
+  }
+
+  .item input[type='checkbox'] {
+    grid-row: 1;
+    grid-column: 1;
+  }
+
+  .item .duedate,
+  .item > .task_name {
+    grid-column: 1;
+  }
+
+  form.item {
+    grid-template-columns: 1fr;
+  }
+
+  button {
+    width: 100%;
+    border-radius: 16px;
+  }
+}
+
