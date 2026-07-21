@@ -13,8 +13,10 @@ body {
 body {
   min-height: 100vh;
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 18px;
   padding: 24px;
   background: linear-gradient(135deg, #0f2b4d 0%, #293f6a 45%, #79a7d3 100%);
   color: #16243a;
@@ -26,10 +28,11 @@ body:hover {
 }
 
 h1 {
+  width: min(100%, 420px);
+  margin: 0 auto 22px;
   font-size: 2.4rem;
   color: #ffffff;
   text-align: center;
-  margin-bottom: 22px;
   letter-spacing: 0.04em;
   text-shadow: 0 3px 10px rgba(0, 0, 0, 0.2);
 }

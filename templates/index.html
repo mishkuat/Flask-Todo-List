@@ -21,12 +21,12 @@
             {% for item in list_items  %}
                 <form action="/delete-item" method="POST">
                     <div class="item" >
-                        <input type="checkbox"  name="checkbox" value="{{item['id']}}" onchange="this.form.submit()">
+                        <input type="checkbox"  name="checkbox" value="{{ item.id }}" onchange="this.form.submit()">
                         <p class="task_name"> {{ item.content }} </p>
-                        <p class="duedate {{ 'overdue' if item.overdue==True else 'notdue' }}">
-                            {{ item.due_date['day']}} / {{item.due_date['month']}} / {{item.due_date['year']}}
+                        <p class="duedate {{ 'overdue' if item.overdue else 'notdue' }}">
+                            {{ item.due_date.day }} / {{ item.due_date.month }} / {{ item.due_date.year }}
                             <br>
-                            Status: {{ 'Overdue' if item.overdue==True else 'Due' }}
+                            Status: {{ 'Overdue' if item.overdue else 'Due' }}
                         </p>
                     </div>
                     <hr>
