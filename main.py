@@ -6,7 +6,9 @@ from werkzeug.security import generate_password_hash, check_password_hash
 
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY", "secretkey")
-app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv("DATABASE_URL", "sqlite:///todo.db")
+app.config["SQLALCHEMY_DATABASE_URI"] = os.getenv(
+    "DATABASE_URL", "sqlite:///todo.db"
+)
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
 
 db = SQLAlchemy(app)
@@ -78,9 +80,13 @@ def signup():
 
         existing = User.query.filter_by(username=username).first()
         if existing:
-            return render_template("signup.html", error="Username already exists.")
+            return render_template(
+                "signup.html", error="Username already exists."
+            )
 
-        user = User(username=username, password=generate_password_hash(password))
+        user = User(
+            username=username, password=generate_password_hash(password)
+        )
         db.session.add(user)
         db.session.commit()
 
@@ -100,7 +106,9 @@ def login():
             session["user"] = user.username
             return redirect(url_for("home"))
 
-        return render_template("login.html", error="Invalid username or password.")
+        return render_template(
+            "login.html", error="Invalid username or password."
+        )
 
     return render_template("login.html")
 
@@ -126,7 +134,9 @@ def home():
         new_item_duedate = request.form["duedate"]
 
         if new_item_content and new_item_duedate:
-            year_value, month_value, day_value = map(int, new_item_duedate.split("-"))
+            year_value, month_value, day_value = map(
+                int, new_item_duedate.split("-")
+            )
             todo = Todo(
                 content=new_item_content,
                 due_date=date(year_value, month_value, day_value),
@@ -137,7 +147,9 @@ def home():
 
         return redirect(url_for("home"))
 
-    list_items = Todo.query.filter_by(user_id=user.id).order_by(Todo.due_date).all()
+    list_items = (
+        Todo.query.filter_by(user_id=user.id).order_by(Todo.due_date).all()
+    )
     return render_template(
         "index.html",
         list_items=list_items,
