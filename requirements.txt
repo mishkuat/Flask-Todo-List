@@ -1,6 +1,22 @@
 Flask==3.0.3
 Flask-SQLAlchemy==3.1.1
-psycopg2-binary>=2.9.9
+psycopg2-binary==2.9.9
+
+# production WSGI
+gunicorn==22.1.0
+
+# formatting / linting
+black==23.9.1
+flake8==6.1.0
+isort==5.13.0
+
+# testing
+pytest==7.4.2
+pytest-flask==1.2.0
+pytest-cov==4.4.0
+
+# developer tools
+pre-commit==4.6.0
 pytest
 pytest-flask
 pytest-cov
