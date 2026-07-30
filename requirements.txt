@@ -1,27 +1,21 @@
-Flask==3.0.3
-Flask-SQLAlchemy==3.1.1
-psycopg2-binary==2.9.9
+## Runtime dependencies
+Flask>=3.0.3,<4.0
+Flask-SQLAlchemy>=3.1.1,<4.0
+psycopg2-binary>=2.9.9
+gunicorn>=20.1.0
 
-# production WSGI
-gunicorn==22.1.0
+## Formatting / linting
+black>=23.9.1
+flake8>=6.0.0
+isort>=5.0.0
 
-# formatting / linting
-black==23.9.1
-flake8==6.1.0
-isort==5.13.0
+## Testing
+pytest>=7.0.0
+pytest-flask>=1.0.0
+pytest-cov>=4.0.0
 
-# testing
-pytest==7.4.2
-pytest-flask==1.2.0
-pytest-cov==4.4.0
+## Developer tools
+pre-commit>=3.0.0
 
-# developer tools
-pre-commit==4.6.0
-pytest
-pytest-flask
-pytest-cov
-black
-flake8
-isort
-pre-commit
-gunicorn
+# Notes: this single requirements.txt contains both runtime and dev/test tools
+# Use a virtual environment and install with: pip install -r requirements.txt
