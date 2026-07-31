@@ -26,6 +26,8 @@ jobs:
           black --check . --line-length=79 .
           flake8 .
       - name: Run tests
+        env:
+          PYTHONPATH: ${{ github.workspace }}
         run: pytest -q
   build-image:
     name: Build Docker image

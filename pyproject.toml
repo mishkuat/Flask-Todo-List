@@ -1,0 +1,25 @@
+[build-system]
+requires = ["setuptools>=61", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "flask-todo-list"
+version = "0.0.1"
+description = "Portfolio Flask Todo List application"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "Flask>=3.0.3,<4.0",
+  "Flask-SQLAlchemy>=3.1.1,<4.0",
+  "psycopg2-binary>=2.9.9",
+]
+
+[tool.black]
+line-length = 79
+
+[tool.isort]
+profile = "black"
+
+[tool.flake8]
+max-line-length = 79
+exclude = [".venv", "build", "dist", "__pycache__"]
