@@ -1,53 +1,111 @@
-# Todo List Web Application
+# Flask Todo List — Portfolio Project
 
-Welcome to the Todo List Web Application! This GitHub repository hosts a user-friendly and straightforward web application that helps you keep track of your tasks and their respective overdue dates. Whether you have a busy schedule or need to organize your daily to-dos, this Todo List has got you covered.
+A small, containerized Todo List web application built with Flask to demonstrate DevOps and full-stack skills.
 
-## Overview
+<!-- Badges: add CI / coverage / image registry badges here -->
 
-The Todo List Web Application is designed to simplify your task management process. With the ability to add tasks and specify their overdue dates, you can prioritize your responsibilities and focus on completing them. The application also allows you to mark completed tasks, giving you a sense of accomplishment as you progress through your list.
+## Completed work
 
-## Technologies Used
+This repository contains the work completed so far for the Flask Todo List project:
 
-The Todo List Web Application leverages the following technologies to create an intuitive user experience:
+- Application and frontend/back-end code (entry: `main.py`).
+- Dockerfile and `docker-compose.yml` for containerized runs.
+- Unit tests under `tests/` and test runner configuration (`pytest`).
+- CI workflow at `.github/workflows/ci.yml` that runs linting and tests, builds the Docker image, and (on the configured branch) can push images to a registry.
 
-- **HTML, CSS, and JavaScript:** The building blocks of the front end, responsible for the web application's layout, styling, and interactivity.
+The sections below explain how to run and test the application locally and with Docker.
 
-- **Python and Flask:** The backend technology that handles data processing, manages tasks and serves the web application to users.
+## Tech Stack
 
-## How to Use
+- Python 3.9+
+- Flask
+- Docker
+- pytest
+- GitHub Actions (CI)
 
-To get started with the Todo List Web Application:
+## What You’ll Find Here
 
-1. Clone this repository to your local machine.
+- Application entry: `main.py`
+- Dockerfile and `docker-compose.yml` for containerized runs
+- Tests: `tests/test_app.py`
+- Static assets: `instance/` and `static/`
 
-2. Ensure you have Python and Flask installed on your system.
+## Run Locally
 
-3. Run the `app.py` script in your preferred Python environment to start the Flask server.
+1. Clone the repo:
 
-4. Visit `http://localhost:5000` in your web browser to access the Todo List application.
+    ```bash
+    git clone <repo-url>
+    cd Flask-Todo-List
+    ```
 
-5. Add tasks by entering the task name and its respective overdue date in the input fields provided.
+2. Create and activate a virtual environment, then install requirements:
 
-6. Tasks that are overdue will be displayed in red, while tasks that are not overdue will be displayed in green.
+```bash
+    python -m venv .venv
+    source .venv/bin/activate   # macOS / Linux
+    .venv\Scripts\activate     # Windows PowerShell
+    pip install -r requirements.txt
+    ```
 
-7. Check off completed tasks to mark them as done and enjoy the satisfaction of seeing your progress.
+3. Run the app:
 
-## Features
+    ```bash
+    python main.py
+    # or
+    flask run
+    ```
 
-The Todo List Web Application comes with the following features:
+Visit <http://localhost:5000>
 
-### Overdue Tasks Highlight
+## Docker
 
-Tasks that have passed their specified overdue dates will be prominently displayed in red, making it easy to identify urgent tasks.
+Build and run locally with Docker:
 
-### Task Completion
+```bash
+docker build -t yourname/flask-todo:latest .
+docker run -p 5000:5000 yourname/flask-todo:latest
+```
 
-As you complete tasks, you can mark them as done to keep track of your progress and accomplishments.
+Push to registry (if you choose to publish):
 
-### Clean and Responsive UI
+```bash
+docker tag yourname/flask-todo:latest your-dockerhub-username/flask-todo:latest
+docker push your-dockerhub-username/flask-todo:latest
+```
 
-The application's user interface is designed to be clean and intuitive, ensuring a pleasant user experience on different devices and screen sizes.
+## Tests
 
-## Contribution
+Run unit tests with pytest:
 
-We welcome contributions from beginner-level developers interested in improving and expanding the Todo List Web Application. Whether you have ideas for UI enhancements, additional features, or code optimizations, your contributions are highly valued. Please feel free to raise issues and submit pull requests to contribute to the project's growth.
+```bash
+pytest -q
+```
+
+## CI / CD (Overview)
+
+- CI workflow is defined in `.github/workflows/ci.yml`. It runs linting and tests, builds the Docker image, and is configured to push images when triggered on the designated branch. See the workflow file for specifics.
+
+## Project Structure
+
+- [main.py](main.py) — application entry
+- [Dockerfile](Dockerfile)
+- [docker-compose.yml](docker-compose.yml)
+- [requirements.txt](requirements.txt)
+- [tests/test_app.py](tests/test_app.py)
+
+## Contributing
+
+Feel free to open issues or PRs. Suggested first steps for contributors:
+
+1. Fork the repo and create a feature branch.
+2. Run tests and ensure new code has tests.
+3. Open a PR with a clear description of changes.
+
+## License
+
+Add license information here (e.g., MIT) or remove this section if not applicable.
+
+## Contact
+
+Add your name and preferred contact (LinkedIn / email) so recruiters can reach you.
