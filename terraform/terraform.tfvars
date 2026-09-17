@@ -1,5 +1,0 @@
-aws_region       = "us-east-1"
-instance_type    = "t3.micro"
-key_name         = "flask-todo-key"
-public_key_path  = "~/.ssh/flask-todo-key.pub"
-allowed_ssh_cidr = "188.148.231.134/32"
