@@ -4,10 +4,16 @@ variable "aws_region" {
   default     = "us-east-1"
 }
 
+variable "branch_name" {
+  description = "Git branch name used to name the EC2 instance"
+  type        = string
+  default     = "dev"
+}
+
 variable "instance_type" {
   description = "EC2 instance type"
   type        = string
-  default     = "t3.micro"
+  default     = "t2.micro"
 }
 
 variable "key_name" {
@@ -25,5 +31,6 @@ variable "public_key_path" {
 variable "allowed_ssh_cidr" {
   description = "Your public IP in CIDR format"
   type        = string
-  default     = "203.0.113.10/32"
+  default     = "188.148.231.134/32"
 }
+

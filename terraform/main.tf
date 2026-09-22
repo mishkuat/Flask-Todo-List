@@ -64,7 +64,7 @@ resource "aws_instance" "app" {
               EOF
 
   tags = {
-    Name = "flask-todo-app"
+    Name = "flask-todo-${var.branch_name}"
   }
 }
 
