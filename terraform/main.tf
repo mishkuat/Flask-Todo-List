@@ -26,7 +26,7 @@ resource "aws_security_group" "app_sg" {
     from_port   = 22
     to_port     = 22
     protocol    = "tcp"
-    cidr_blocks = [var.allowed_ssh_cidr]
+    cidr_blocks = ["188.148.231.134/32"]
     description = "SSH from my IP"
   }
 
