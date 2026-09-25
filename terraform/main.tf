@@ -55,10 +55,13 @@ resource "aws_instance" "app" {
   user_data = <<-EOF
               #!/bin/bash
               sudo apt-get update
-              sudo apt-get install -y docker.io docker-compose-plugin
+              sudo apt-get install -y docker.io docker-compose-v2 git
               sudo systemctl enable --now docker
               sudo usermod -aG docker ubuntu
-              mkdir -p /home/ubuntu/Flask-Todo-List
+              # Clone repo if it doesn't exist, or pull latest if it does
+              if [ ! -d "/home/ubuntu/Flask-Todo-List" ]; then
+                git clone https://github.com/mishkuat/Flask-Todo-List.git /home/ubuntu/Flask-Todo-List
+              fi
               chown -R ubuntu:ubuntu /home/ubuntu/Flask-Todo-List
               EOF
 
