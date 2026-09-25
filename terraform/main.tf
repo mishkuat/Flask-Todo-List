@@ -54,13 +54,12 @@ resource "aws_instance" "app" {
 
   user_data = <<-EOF
               #!/bin/bash
-              apt-get update
-              apt-get install -y git docker.io docker-compose
-              systemctl enable docker
-              systemctl start docker
-              usermod -aG docker ubuntu
-              mkdir -p /home/ubuntu/app
-              chown -R ubuntu:ubuntu /home/ubuntu/app
+              sudo apt-get update
+              sudo apt-get install -y docker.io docker-compose-plugin git
+              sudo systemctl enable --now docker
+              sudo usermod -aG docker ubuntu
+              mkdir -p /home/ubuntu/Flask-Todo-List
+              chown -R ubuntu:ubuntu /home/ubuntu/Flask-Todo-List
               EOF
 
   tags = {
