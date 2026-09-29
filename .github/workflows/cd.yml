@@ -53,7 +53,9 @@ jobs:
           host: ${{ env.PUBLIC_IP }}
           username: ubuntu
           key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script_stop: true
           script: |
+            sudo cloud-init status --wait
             cd /home/ubuntu/Flask-Todo-List
             echo "IMAGE_TAG=${{ github.sha }}" > image.env
             sudo docker compose --env-file image.env pull web
