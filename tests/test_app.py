@@ -12,7 +12,7 @@ def client():
 def test_login_page_loads(client):
     response = client.get("/login")
     assert response.status_code == 200
-    assert b"Log in" in response.data
+    assert b"Log In" in response.data
 
 
 def test_signup_page_loads(client):

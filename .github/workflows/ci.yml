@@ -44,11 +44,11 @@ jobs:
           file: Dockerfile
           push: false
           tags: mishkuatsabir/flask-todo:ci-${{ github.sha }}
-  push-image:
-    name: Push Docker image
+  push-image-dev:
+    name: Push Docker image for branch and commit
     runs-on: ubuntu-latest
     needs: build-image
-    if: github.ref == 'refs/heads/master'
+    if: github.event_name == 'push'
     steps:
       - uses: actions/checkout@v4
       - name: Log in to Docker Hub
@@ -58,7 +58,31 @@ jobs:
           password: ${{ secrets.TOKEN_DOCKERHUB }}
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
-      - name: Build and push image
+      - name: Build and push image for commit
+        shell: bash
+        run: |
+          SAFE_BRANCH="${GITHUB_REF_NAME//\//-}"
+          docker buildx build \
+            --push \
+            -t mishkuatsabir/flask-todo:sha-${GITHUB_SHA} \
+            -t mishkuatsabir/flask-todo:branch-${SAFE_BRANCH} \
+            .
+
+  push-image-release:
+    name: Push release image to Docker Hub
+    runs-on: ubuntu-latest
+    needs: build-image
+    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
+    steps:
+      - uses: actions/checkout@v4
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.TOKEN_DOCKERHUB }}
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      - name: Build and push release image
         uses: docker/build-push-action@v4
         with:
           context: .

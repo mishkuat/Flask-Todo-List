@@ -1,0 +1,103 @@
+name: Deploy application
+
+on:
+  workflow_run:
+    workflows: [CI]
+    types: [completed]
+    branches:
+      - master
+      - '**'
+      
+jobs:
+  deploy:
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.workflow_run.head_sha }}
+      
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v3
+
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+            aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+            aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+            aws-region: us-east-1
+            
+      - name: Write SSH public key for Terraform
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.EC2_PUBLIC_KEY }}" > ~/.ssh/flask-todo-key.pub
+          chmod 600 ~/.ssh/flask-todo-key.pub
+
+      - name: Terraform init
+        run: |
+          cd terraform
+          terraform init
+
+      - name: Terraform apply
+        run: |
+          cd terraform
+          terraform apply -auto-approve \
+            -var="branch_name=${{ github.event.workflow_run.head_branch }}" \
+            -var="public_key_path=/home/runner/.ssh/flask-todo-key.pub" \
+            -var="allowed_ssh_cidr=0.0.0.0/0"
+      
+      - name: Get EC2 public IP
+        run: |
+          cd terraform
+          echo "PUBLIC_IP=$(terraform output -raw public_ip)" >> $GITHUB_ENV
+
+      - name: Wait for SSH port
+        shell: bash
+        run: |
+          for attempt in {1..30}; do
+            if timeout 5 bash -c ":</dev/tcp/${PUBLIC_IP}/22" 2>/dev/null; then
+              echo "SSH port is accepting connections."
+              exit 0
+            fi
+
+            echo "SSH not ready yet (attempt ${attempt}/30); retrying in 10 seconds."
+            sleep 10
+          done
+
+          echo "::error::SSH port did not become available within 5 minutes."
+          exit 1
+
+      - name: Deploy to EC2
+        uses: appleboy/ssh-action@v1.0.3
+        env:
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DB: ${{ secrets.POSTGRES_DB }}
+        with:
+          host: ${{ env.PUBLIC_IP }}
+          username: ubuntu
+          key: ${{ secrets.EC2_SSH_PRIVATE_KEY }}
+          script_stop: true
+          script: |
+            sudo cloud-init status --wait
+            cd /home/ubuntu/Flask-Todo-List
+
+            if [[ -z "$POSTGRES_USER" || -z "$POSTGRES_PASSWORD" || -z "$POSTGRES_DB" ]]; then
+              echo "::error::Database secrets are not configured."
+              exit 1
+            fi
+
+            cat > .env <<EOF
+            POSTGRES_USER=$POSTGRES_USER
+            POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+            POSTGRES_DB=$POSTGRES_DB
+            EOF
+            chmod 600 .env
+            chown ubuntu:ubuntu .env
+
+            echo "IMAGE_TAG=sha-${{ github.event.workflow_run.head_sha }}" > image.env
+            sudo docker compose --env-file image.env pull web
+            sudo docker compose --env-file image.env up -d web
+            sudo docker image prune -f
